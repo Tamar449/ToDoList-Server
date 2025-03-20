@@ -25,11 +25,9 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseCors("MyPolicy");
 
