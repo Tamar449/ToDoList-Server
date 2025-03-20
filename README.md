@@ -1,1 +1,1 @@
-# ToDoList-Server
+צד שרת ב C# לפרויקט ToDoList לניהול רשימת משימות. המשימות נשמרות במסד הנתונים - my sql server.
