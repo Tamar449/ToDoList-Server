@@ -1,8 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
-EXPOSE 5151
 
-ENV ASPNETCORE_URLS=http://+:${PORT}
+ENV ASPNETCORE_URLS=http://+:${PORT:-8080}
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG configuration=Release

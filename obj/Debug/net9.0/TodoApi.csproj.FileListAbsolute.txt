@@ -105,3 +105,4 @@ C:\Users\This User\Desktop\הנדסאים\שנה ב\פרקטיקוד\ToDo List F
 C:\Users\This User\Desktop\הנדסאים\שנה ב\פרקטיקוד\ToDo List Fullstack\TodoApi\obj\Debug\net9.0\TodoApi.pdb
 C:\Users\This User\Desktop\הנדסאים\שנה ב\פרקטיקוד\ToDo List Fullstack\TodoApi\obj\Debug\net9.0\TodoApi.genruntimeconfig.cache
 C:\Users\This User\Desktop\הנדסאים\שנה ב\פרקטיקוד\ToDo List Fullstack\TodoApi\obj\Debug\net9.0\ref\TodoApi.dll
+C:\Users\This User\Desktop\הנדסאים\שנה ב\פרקטיקוד\ToDo List Fullstack\TodoApi\obj\Debug\net9.0\TodoApi.sourcelink.json
