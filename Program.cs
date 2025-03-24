@@ -5,10 +5,11 @@ using TodoApi;
 var builder = WebApplication.CreateBuilder(args);
 
 
-var databaseUri = "mysql://u1jqyva0iyhuasdn:nSqmjJSsUdceiZ7nlZsi@b8eucp0uckanebjnolun-mysql.services.clever-cloud.com:3306/b8eucp0uckanebjnolun";
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+// "mysql://u1jqyva0iyhuasdn:nSqmjJSsUdceiZ7nlZsi@b8eucp0uckanebjnolun-mysql.services.clever-cloud.com:3306/b8eucp0uckanebjnolun";
 
 // ממיר את ה-URI למבנה נתונים
-var uri = new Uri(databaseUri);
+var uri = new Uri(databaseUrl);
 var userInfo = uri.UserInfo.Split(':');
 
 // בונה את מחרוזת החיבור בפורמט המתאים
@@ -22,11 +23,6 @@ Console.WriteLine($"🔍 Connection String: {connectionString}");
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 41)),
     mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
-
-
-
-
-
 
 
 
