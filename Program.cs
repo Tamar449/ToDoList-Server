@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Internal;
 using TodoApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +8,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
+
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
-    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ToDoDB"))));
+    new MySqlServerVersion(new Version(8, 0, 41)),
+    MySqlOptions => MySqlOptions.EnableRetryOnFailure()));
+// ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ToDoDB"))));
 
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
@@ -23,6 +29,20 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
         }));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ToDoDbContext>();
+    try
+    {
+        dbContext.Database.OpenConnection();
+        Console.WriteLine("✅ הצלחנו להתחבר למסד הנתונים!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ חיבור למסד הנתונים נכשל: {ex.Message}");
+    }
+}
 
 
 app.UseSwagger();
