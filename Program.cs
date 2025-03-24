@@ -12,8 +12,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
-    ServerVersion.Parse("8.0.22")));
-
+    ServerVersion.Parse("8.0.22"),
+    mysqlOptions => mysqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)
+                           .CommandTimeout(60)) // Timeout לחיבור
+);
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
         {
@@ -24,10 +26,8 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 
 var app = builder.Build();
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
 
 app.UseCors("MyPolicy");
 
@@ -74,9 +74,4 @@ app.MapDelete("/{id}", async (int Id, ToDoDbContext Db) =>
     return Results.NotFound();
 });
 
-
 app.Run();
-
-
-
-
