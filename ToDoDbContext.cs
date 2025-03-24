@@ -7,27 +7,22 @@ namespace TodoApi;
 
 public partial class ToDoDbContext : DbContext
 {
-    private readonly string _connectionString;
-
-    public ToDoDbContext()
-    {
-    }
-
-    public ToDoDbContext(DbContextOptions<ToDoDbContext> options, IConfiguration configuration)
+    // קונסטרוקטור שמקבל את ה-options בלבד
+    public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
         : base(options)
     {
-        _connectionString = configuration.GetConnectionString("ToDoDB");
     }
 
     public virtual DbSet<Item> Items { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseMySql(_connectionString, Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(_connectionString));
-        }
-    }
+    // הפונקציה הזו כבר לא נדרשת כאן
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     if (!optionsBuilder.IsConfigured)
+    //     {
+    //         optionsBuilder.UseMySql(_connectionString, Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(_connectionString));
+    //     }
+    // }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
