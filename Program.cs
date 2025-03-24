@@ -33,6 +33,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ToDoDbContext>();
+    Console.WriteLine($"🔍 Connection String: {Environment.GetEnvironmentVariable("ToDoDB")}");
     try
     {
         dbContext.Database.OpenConnection();
