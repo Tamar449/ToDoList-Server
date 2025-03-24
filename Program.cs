@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"),
-    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ToDoDB"))));
+    ServerVersion.Parse("8.0.22")));
 
 
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
