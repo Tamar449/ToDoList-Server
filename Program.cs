@@ -33,7 +33,6 @@ app.UseCors("MyPolicy");
 
 app.MapGet("/", async (ToDoDbContext Db) =>
 {
-    System.Console.WriteLine("hello!");
     return await Db.Items.ToListAsync();
 });
 

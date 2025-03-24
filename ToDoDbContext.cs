@@ -1,27 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using Microsoft.Extensions.Configuration;
 
 namespace TodoApi;
 
 public partial class ToDoDbContext : DbContext
 {
+    private readonly string _connectionString;
+
     public ToDoDbContext()
     {
     }
 
-    public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
+    public ToDoDbContext(DbContextOptions<ToDoDbContext> options, IConfiguration configuration)
         : base(options)
     {
+        _connectionString = configuration.GetConnectionString("ToDoDB");
     }
 
     public virtual DbSet<Item> Items { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){}
-// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//         => optionsBuilder.UseMySql("server=localhost;database=ToDoDB;user=Tamar;password=Tamar@449", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql")
-  
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseMySql(_connectionString, Microsoft.EntityFrameworkCore.ServerVersion.AutoDetect(_connectionString));
+        }
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
